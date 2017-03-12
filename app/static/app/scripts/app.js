@@ -119,7 +119,6 @@
             {
                 text: 'Reject Changes',
                 handler: function () {
-                    // Отмена изменений в stoe
                     registrStore.rejectChanges();
                 }
             },

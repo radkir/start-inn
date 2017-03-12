@@ -1,10 +1,10 @@
 ﻿from django.shortcuts import render
 from django.template import RequestContext
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse
 from app.models import Registr
 from app.serializers import RegistrSerializer
 import json
-from rest_framework.response import Response
+
 
 
 def home(request):
@@ -43,14 +43,14 @@ def data(request):
 
             if method=='Create':
                 try:
-                    create_obj  = RegistrSerializer(Registr.objects.create(
+                    create_obj  = Registr.objects.create(
                         fam     = dict['fam'],
                         im      = dict['im'],
                         otch    = dict['otch'],
                         city    = dict['city'],
-                        street  = dict['street']))
-                    create_out = dict['callback'] +'({"data":{"id":' + str(create_obj.id) + '},' + ok
-
+                        street  = dict['street'])
+                    serializer = RegistrSerializer(create_obj)
+                    create_out = dict['callback'] +'({"data":{"id":' + str(serializer.data) + '},' + ok
                     return HttpResponse(create_out);
                 except Exception:
                     error_create = dict['callback'] +'({"data":{"id":' + dict['id'] +'},' + err 
@@ -59,7 +59,6 @@ def data(request):
 
             if method=='Update':
                 try:
-
                     update_obj = Registr.objects.get(id = dict['id'])
                     update_obj.fam    = dict['fam']
                     update_obj.im     = dict['im']
